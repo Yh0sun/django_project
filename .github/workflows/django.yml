@@ -25,3 +25,10 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
+    - name: Build and Push Docker Image
+      uses: yousun-excellent/docker-build-push@v2
+      with:
+        image: yousun2286/django_project
+        registry: docker.io
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password : ${{ secrets.DOCKER_PASSWORD }}
