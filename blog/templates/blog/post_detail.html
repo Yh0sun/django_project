@@ -1,0 +1,58 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+    <script>
+        function post_remove() {
+            var result = confirm('Post를 삭제하시겠습니까?')
+            if(result) {
+                var remover_url = "{% url 'post_remove' pk=post.pk %}"
+                document.location.href = remover_url
+            }
+        }
+    </script>
+
+    <div class="post">
+        <h1> {{ post.title }} </h1>
+        <p> 장르 : {{ post.genre }} </p>
+        <div class="date">
+            <p> 개봉년도 : {{post.published_date}}</p>
+        </div>
+
+        <p> 상영시간 : {{ post.running_time }} </p>
+        <p> 감독 : {{ post.director_name }} </p>
+        <p> 배우 : {{ post.actor_actress }} </p>
+        <p> 줄거리 : {{post.text| linebreaksbr}}</p>
+
+        {% if user.is_authenticated %}
+            <a class="btn btn-default" href="{% url 'post_edit' pk=post.pk %}">
+                <span class="glyphicon glyphicon-pencil"></span>
+            </a>
+
+            <a class="btn btn-default" href="#" onclick="post_remove()">
+                <span class="glyphicon glyphicon-remove"></span>
+            </a>
+        {% endif %}
+
+        <hr>
+        <a class="btn btn-default" href="{% url 'add_comment_to_post' pk=post.pk %}"> Add comment</a>
+        {% for comment in post.comments.all %}
+            {% if user.is_authenticated or comment.approved_comment %}
+            <div class="comment">
+                <div class="date">
+                    {{ comment.created_date }}
+                </div>
+                {% if not comment.approved_comment %}
+                    <a class="btn btn-default" href="{% url 'comment_remove' pk=comment.pk %}">
+                        <span class="glyphicon glyphicon-remove"></span></a>
+                    <a class="btn btn-default" href="{% url 'comment_approve' pk=comment.pk %}">
+                        <span class="glyphicon glyphicon-ok"></span></a>
+                {% endif %}
+                <strong>{{ comment.author }}</strong>
+                <p>{{ comment.text |linebreaks }}</p>
+            </div>
+            {% endif %}
+        {% empty %}
+            <p>No comments here yet :(</p>
+        {% endfor %}
+    </div>
+{% endblock %}
