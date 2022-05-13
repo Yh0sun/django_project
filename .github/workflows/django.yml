@@ -26,9 +26,10 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
     - name: Build and Push Docker Image
-      uses: actions/checkout@v4
+      uses: mr-smithers-excellent/docker-build-push@v5
       with:
         image: yousun2286/django_project
+        tags: django
         registry: docker.io
         username: ${{ secrets.DOCKER_USERNAME }}
         password : ${{ secrets.DOCKER_PASSWORD }}
