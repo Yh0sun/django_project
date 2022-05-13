@@ -4,9 +4,7 @@ WORKDIR /usr/src/app
 
 COPY . .
 
-ENV PYTHONIOENCODING=utf-8
-
-WORKDIR /project
+WORKDIR ./project
 RUN pip install -r requirements.txt
 #CMD ["python3", "manage.py", "migrate"]
 #CMD ["python3", "manage.py", "runserver", "0:8000"]
